@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const createServer = require('../createServer');
 
 describe('HTTP server', () => {
@@ -13,6 +14,21 @@ describe('HTTP server', () => {
 
     // Assert
     expect(response.statusCode).toEqual(404);
+  });
+
+  describe('when GET /', () => {
+    it('should return 200 and Forum API v.1.0', async () => {
+      // Arrange
+      const server = await createServer({});
+      // Action
+      const response = await server.inject({
+        method: 'GET',
+        url: '/',
+      });
+      // Assert
+      expect(response.statusCode).toEqual(200);
+      expect(response.result).toEqual('Forum API v.1.0');
+    });
   });
 
   it('should handle server error correctly', async () => {

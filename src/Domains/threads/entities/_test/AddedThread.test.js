@@ -1,47 +1,38 @@
+/* eslint-disable no-undef */
 const AddedThread = require('../AddedThread');
 
-describe('a AddedThread entities', () => {
-  it('should throw error when payload did not contain needed property', () => {
-    // Arrange
+describe('AddedThread entities', () => {
+  it('should throw error when payload not contain needed', () => {
     const payload = {
-      title: 'thread 1',
-      owner: 'user-DWrT3pXe1hccYkV1eIAxS',
+      id: 'thread-123',
     };
 
-    // Action and Assert
+    //  Action and assert
     expect(() => new AddedThread(payload)).toThrowError(
-      'ADDED_THREAD.NOT_CONTAIN_NEEDED_PROPERTY'
+      'THREAD.NOT_CONTAIN_NEEDED',
     );
   });
 
-  it('should throw error when payload did not meet data type specification', () => {
-    // Arrange
+  it('should throw error when paylod did not meet specification', () => {
     const payload = {
-      id: {},
-      title: 12,
-      owner: true,
+      id: true,
+      title: 122,
+      owner: 123,
     };
-
-    // Action and Assert
     expect(() => new AddedThread(payload)).toThrowError(
-      'ADDED_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION'
+      'THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION',
     );
   });
 
-  it('should create addedThread object correctly', () => {
-    // Arrange
+  it('should addThread correctly', () => {
     const payload = {
-      id: 'thread-h_W1Plfpj0TY7wyT2PUPX',
-      title: 'sebuah thread',
-      owner: 'user-DWrT3pXe1hccYkV1eIAxS',
+      id: 'thread-12',
+      title: 'lorep ipsum ipsum',
+      owner: 'user-134',
     };
 
-    // Action
-    const { id, title, owner } = new AddedThread(payload);
+    const addedThread = new AddedThread(payload);
 
-    // Assert
-    expect(id).toEqual(payload.id);
-    expect(title).toEqual(payload.title);
-    expect(owner).toEqual(payload.owner);
+    expect(addedThread.id).toEqual(payload.id);
   });
 });
