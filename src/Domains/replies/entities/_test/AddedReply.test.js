@@ -1,14 +1,14 @@
 /* eslint-disable no-undef */
-const AddedComment = require('../AddedComment');
+const AddedReply = require('../AddedReply');
 
-describe('AddedComment entities', () => {
+describe('AddedReply entities', () => {
   it('should throw error when paylod not contain property', () => {
     //   Arrange
     const payload = {};
 
     // Action and assert
-    expect(() => new AddedComment(payload)).toThrowError(
-      'COMMENT.NOT_CONTAIN_NEEDED',
+    expect(() => new AddedReply(payload)).toThrowError(
+      'REPLY.NOT_CONTAIN_NEEDED',
     );
   });
 
@@ -16,23 +16,23 @@ describe('AddedComment entities', () => {
     const payload = {
       id: true,
       content: 123,
-      threadId: true,
+      commentId: true,
       owner: 123,
     };
 
-    expect(() => new AddedComment(payload)).toThrowError('COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION');
+    expect(() => new AddedReply(payload)).toThrowError('REPLY.NOT_MEET_DATA_TYPE_SPECIFICATION');
   });
 
   it('should correctly', () => {
     const payload = {
-      id: 'comment-123',
+      id: 'reply-123',
       content: 'content-123',
-      threadId: 'thread-123',
+      commentId: 'comment-123',
       owner: 'user-123',
     };
 
-    const newComment = new AddedComment(payload);
+    const newReply = new AddedReply(payload);
 
-    expect(newComment.owner).toEqual(payload.owner);
+    expect(newReply.owner).toEqual(payload.owner);
   });
 });

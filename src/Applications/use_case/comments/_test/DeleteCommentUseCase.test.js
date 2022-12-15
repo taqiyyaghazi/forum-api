@@ -1,11 +1,10 @@
 /* eslint-disable no-undef */
 const DeletedCommentUseCase = require('../DeleteCommentUseCase');
-const DeletedComment = require('../../../../Domains/comments/entities/DeletedComment');
 const CommentRepository = require('../../../../Domains/comments/CommentRepository');
 const ThreadRepository = require('../../../../Domains/threads/ThreadRepository');
 
-describe('first', () => {
-  it('should orchestrating the add thread action correctly', async () => {
+describe('DeleteCommentUseCase', () => {
+  it('should orchestrating the delete comment action correctly', async () => {
     const useCasePayload = {
       threadId: 'thread-123',
       commentId: 'comment-123',

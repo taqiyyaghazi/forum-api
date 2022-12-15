@@ -5,8 +5,8 @@ const NewComment = require('../../../../Domains/comments/entities/NewComment');
 const CommentRepository = require('../../../../Domains/comments/CommentRepository');
 const ThreadRepository = require('../../../../Domains/threads/ThreadRepository');
 
-describe('AddCommentUseCase interface', () => {
-  it('should orchestrating the add thread action correctly', async () => {
+describe('AddCommentUseCase', () => {
+  it('should orchestrating the add comment action correctly', async () => {
     const credential = { id: 'user-123' };
     const useCasePayload = {
       content: 'content comment-1234',

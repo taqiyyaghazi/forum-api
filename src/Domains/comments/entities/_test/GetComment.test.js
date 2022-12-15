@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 const GetComment = require('../GetComment');
 
-describe('GetComment entitie', () => {
+describe('GetComment entities', () => {
   it('should throw error not contain property', () => {
     const payload = {
       id: 'comment-123',

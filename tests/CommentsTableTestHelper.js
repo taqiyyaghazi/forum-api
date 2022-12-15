@@ -30,10 +30,10 @@ const cleanTableComment = async () => {
   await pool.query('DELETE FROM comments WHERE 1=1');
 };
 
-const ThreadTableTestHelper = {
+const CommentTableTestHelper = {
   addComment,
   getCommentById,
   cleanTableComment,
 };
 
-module.exports = ThreadTableTestHelper;
+module.exports = CommentTableTestHelper;
