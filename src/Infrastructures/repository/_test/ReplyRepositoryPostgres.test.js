@@ -117,7 +117,7 @@ describe('ReplyRepositoryPostgres interface', () => {
 
       await expect(
         replyRepositoryPostgres.verifyAvailableReply('reply-125'),
-      ).resolves.not.toThrowError();
+      ).resolves.not.toThrowError(NotFoundError);
     });
   });
 
@@ -158,7 +158,7 @@ describe('ReplyRepositoryPostgres interface', () => {
           owner: 'user-123',
           replyId: 'reply-125',
         }),
-      ).resolves.not.toThrowError();
+      ).resolves.not.toThrowError(NotFoundError);
     });
   });
 
@@ -218,13 +218,14 @@ describe('ReplyRepositoryPostgres interface', () => {
         owner: 'user-xxx',
         content: 'lorem ipsum',
       });
-      await RepliesTableTestHelper.addReply({
+      const result = await RepliesTableTestHelper.addReply({
         id: 'reply-yyy',
         threadId: 'thread-yyyy',
         commentId: 'comment-zzz',
         owner: 'user-xxx',
         content: 'lorem ipsum',
       });
+      const replyDate = result.rows[0].date;
 
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
       const replies = await replyRepositoryPostgres.getReplyWithComment(
@@ -239,6 +240,7 @@ describe('ReplyRepositoryPostgres interface', () => {
       expect(replies[0]).toHaveProperty('username');
       expect(replies[0].username).toEqual('dicoding');
       expect(replies[0].date).toBeDefined();
+      expect(replies[0].date).toEqual(replyDate);
       expect(replies[0].content).toEqual('lorem ipsum');
       expect(replies[0].is_delete).toEqual(false);
     });

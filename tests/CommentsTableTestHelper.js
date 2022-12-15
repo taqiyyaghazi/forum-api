@@ -9,7 +9,7 @@ const addComment = async ({
 }) => {
   const date = new Date().toISOString();
   const query = {
-    text: 'INSERT INTO comments VALUES ($1,$2,$3,$4,$5)',
+    text: 'INSERT INTO comments VALUES ($1,$2,$3,$4,$5) returning date',
     values: [id, content, threadId, owner, date],
   };
   const result = await pool.query(query);

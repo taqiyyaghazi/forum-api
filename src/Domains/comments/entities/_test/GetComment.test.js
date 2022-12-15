@@ -35,8 +35,9 @@ describe('GetComment entities', () => {
     };
     const getComment = new GetComment(payload);
     expect(getComment.id).toStrictEqual(payload.id);
+    expect(getComment.content).toStrictEqual(payload.content);
     expect(getComment.username).toStrictEqual(payload.username);
     expect(getComment.date).toStrictEqual(payload.date);
-    expect(getComment.content).toStrictEqual(payload.content);
+    expect(getComment.is_delete).toStrictEqual(payload.is_delete);
   });
 });

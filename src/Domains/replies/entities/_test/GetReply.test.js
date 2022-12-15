@@ -35,8 +35,9 @@ describe('GetReply entities', () => {
     };
     const getReply = new GetReply(payload);
     expect(getReply.id).toStrictEqual(payload.id);
+    expect(getReply.content).toStrictEqual(payload.content);
     expect(getReply.username).toStrictEqual(payload.username);
     expect(getReply.date).toStrictEqual(payload.date);
-    expect(getReply.content).toStrictEqual(payload.content);
+    expect(getReply.is_delete).toStrictEqual(payload.is_delete);
   });
 });

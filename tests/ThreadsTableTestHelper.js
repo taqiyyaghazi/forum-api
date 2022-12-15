@@ -9,11 +9,12 @@ const addThread = async ({
 }) => {
   const date = new Date().toISOString();
   const query = {
-    text: 'INSERT INTO threads VALUES ($1,$2,$3,$4,$5)',
+    text: 'INSERT INTO threads VALUES ($1,$2,$3,$4,$5) returning date',
     values: [id, title, body, owner, date],
   };
 
-  await pool.query(query);
+  const result = await pool.query(query);
+  return result;
 };
 
 const getThreadById = async (id) => {

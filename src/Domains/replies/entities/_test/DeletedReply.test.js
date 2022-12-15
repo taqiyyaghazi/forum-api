@@ -35,6 +35,9 @@ describe('DeletedReply entities', () => {
     };
 
     const deleteReply = new DeletedReply(payload);
+    expect(deleteReply.threadId).toEqual(payload.threadId);
+    expect(deleteReply.commentId).toEqual(payload.commentId);
+    expect(deleteReply.replyId).toEqual(payload.replyId);
     expect(deleteReply.owner).toEqual(payload.owner);
   });
 });

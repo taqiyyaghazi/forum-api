@@ -105,12 +105,14 @@ describe('ThreadRepositoryPostgres interface', () => {
         username: 'ghazi',
       });
 
-      await ThreadsTableTestHelper.addThread({
+      const result = await ThreadsTableTestHelper.addThread({
         id: 'thread-123',
         title: 'Title 123',
         body: 'Body thread',
         owner: 'user-123',
       });
+      const threadDate = result.rows[0].date;
+
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
       const threads = await threadRepositoryPostgres.getThreadById(
         'thread-123',
@@ -120,6 +122,7 @@ describe('ThreadRepositoryPostgres interface', () => {
       expect(threads.title).toEqual('Title 123');
       expect(threads.body).toEqual('Body thread');
       expect(threads.date).toBeDefined();
+      expect(threads.date).toEqual(threadDate);
     });
   });
 });

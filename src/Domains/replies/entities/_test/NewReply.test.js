@@ -38,6 +38,7 @@ describe('NewReply Entities', () => {
     const newComment = new NewReply(payload);
 
     expect(newComment.content).toEqual(payload.content);
+    expect(newComment.threadId).toEqual(payload.threadId);
     expect(newComment.commentId).toEqual(payload.commentId);
     expect(newComment.owner).toEqual(payload.owner);
   });

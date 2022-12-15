@@ -33,6 +33,9 @@ describe('AddedComment entities', () => {
 
     const newComment = new AddedComment(payload);
 
+    expect(newComment.id).toEqual(payload.id);
+    expect(newComment.content).toEqual(payload.content);
+    expect(newComment.threadId).toEqual(payload.threadId);
     expect(newComment.owner).toEqual(payload.owner);
   });
 });

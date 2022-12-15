@@ -9,11 +9,11 @@ const NewComment = require('../../../Domains/comments/entities/NewComment');
 const DeletedComment = require('../../../Domains/comments/entities/DeletedComment');
 // Layer Commons / Handle error
 const NotFoundError = require('../../../Commons/exceptions/NotFoundError');
+const AuthorizationError = require('../../../Commons/exceptions/AuthorizationError');
 // test
 const ThreadsTableTestHelper = require('../../../../tests/ThreadsTableTestHelper');
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
 const CommentTableTestHelper = require('../../../../tests/CommentsTableTestHelper');
-const AuthorizationError = require('../../../Commons/exceptions/AuthorizationError');
 
 describe('CommentRepositoryPostgres interface', () => {
   afterEach(async () => {
@@ -98,7 +98,7 @@ describe('CommentRepositoryPostgres interface', () => {
 
       await expect(
         commentRepositoryPostgres.verifyAvailableComment('comment-125'),
-      ).resolves.not.toThrowError();
+      ).resolves.not.toThrowError(NotFoundError);
     });
   });
 
@@ -134,7 +134,7 @@ describe('CommentRepositoryPostgres interface', () => {
           owner: 'user-123',
           commentId: 'comment-125',
         }),
-      ).resolves.not.toThrowError();
+      ).resolves.not.toThrowError(NotFoundError);
     });
   });
 
@@ -181,12 +181,13 @@ describe('CommentRepositoryPostgres interface', () => {
         id: 'thread-yyyy',
         owner: 'user-xxx',
       });
-      await CommentTableTestHelper.addComment({
+      const result = await CommentTableTestHelper.addComment({
         id: 'comment-zzz',
         threadId: 'thread-yyyy',
         owner: 'user-xxx',
         content: 'lorem ipsum',
       });
+      const commentDate = result.rows[0].date;
 
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
       const comments = await commentRepositoryPostgres.getCommentWithThread(
@@ -201,6 +202,7 @@ describe('CommentRepositoryPostgres interface', () => {
       expect(comments[0]).toHaveProperty('username');
       expect(comments[0].username).toEqual('dicoding');
       expect(comments[0].date).toBeDefined();
+      expect(comments[0].date).toEqual(commentDate);
       expect(comments[0].content).toEqual('lorem ipsum');
       expect(comments[0].is_delete).toEqual(false);
     });

@@ -33,6 +33,8 @@ describe('DeletedComment entities', () => {
     };
 
     const deleteComment = new DeletedComment(payload);
+    expect(deleteComment.threadId).toEqual(payload.threadId);
+    expect(deleteComment.commentId).toEqual(payload.commentId);
     expect(deleteComment.owner).toEqual(payload.owner);
   });
 });

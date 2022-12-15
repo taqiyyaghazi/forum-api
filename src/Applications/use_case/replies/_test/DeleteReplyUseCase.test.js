@@ -54,5 +54,11 @@ describe('DeleteReplyUseCase', () => {
       owner: useCasePayload.owner,
       replyId: useCasePayload.replyId,
     });
+    expect(mockReplyRepository.deleteReply).toBeCalledWith({
+      owner: useCasePayload.owner,
+      replyId: useCasePayload.replyId,
+      commentId: useCasePayload.commentId,
+      threadId: useCasePayload.threadId,
+    });
   });
 });

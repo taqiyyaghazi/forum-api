@@ -10,7 +10,7 @@ const addReply = async ({
 }) => {
   const date = new Date().toISOString();
   const query = {
-    text: 'INSERT INTO replies VALUES ($1, $2, $3, $4, $5, $6)',
+    text: 'INSERT INTO replies VALUES ($1, $2, $3, $4, $5, $6) returning date',
     values: [id, content, threadId, commentId, owner, date],
   };
   const result = await pool.query(query);

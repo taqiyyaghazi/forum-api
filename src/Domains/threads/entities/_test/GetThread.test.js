@@ -33,14 +33,15 @@ describe('Thread entities', () => {
       title: 'lorem ipsum',
       body: 'lorem ipsum ipsum lorem',
       date: '2022-01-22',
-      owner: 'user-123',
     };
 
     //   Action
     const thread = new GetThread(payload);
 
+    expect(thread.id).toEqual(payload.id);
     expect(thread.username).toEqual(payload.username);
     expect(thread.title).toEqual(payload.title);
     expect(thread.body).toEqual(payload.body);
+    expect(thread.date).toEqual(payload.date);
   });
 });
