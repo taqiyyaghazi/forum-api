@@ -13,11 +13,11 @@ const AuthorizationError = require('../../../Commons/exceptions/AuthorizationErr
 // test
 const ThreadsTableTestHelper = require('../../../../tests/ThreadsTableTestHelper');
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
-const CommentTableTestHelper = require('../../../../tests/CommentsTableTestHelper');
+const CommentsTableTestHelper = require('../../../../tests/CommentsTableTestHelper');
 
 describe('CommentRepositoryPostgres interface', () => {
   afterEach(async () => {
-    await CommentTableTestHelper.cleanTableComment();
+    await CommentsTableTestHelper.cleanTableComment();
     await ThreadsTableTestHelper.cleanTableThread();
     await UsersTableTestHelper.cleanTable();
   });
@@ -35,6 +35,7 @@ describe('CommentRepositoryPostgres interface', () => {
         owner: 'user-123',
       };
 
+      const currentDate = new Date().toISOString();
       const { content, threadId, owner } = { ...payload };
       const newComment = new NewComment({ content, threadId, owner });
 
@@ -50,12 +51,13 @@ describe('CommentRepositoryPostgres interface', () => {
         owner: 'user-123',
         title: 'Title thread',
         body: 'Content body thread',
+        currentDate,
       });
 
       const addedComment = await commentRepositoryPostgres.addComment(
         newComment,
       );
-      const comment = await CommentTableTestHelper.getCommentById(
+      const comment = await CommentsTableTestHelper.getCommentById(
         'comment-123',
       );
       expect(addedComment).toStrictEqual(
@@ -81,17 +83,20 @@ describe('CommentRepositoryPostgres interface', () => {
     });
 
     it('should not throw NotFoundError when commentId found', async () => {
+      const currentDate = new Date().toISOString();
       await UsersTableTestHelper.addUser({
         id: 'user-123',
       });
       await ThreadsTableTestHelper.addThread({
         id: 'thread-123',
         owner: 'user-123',
+        currentDate,
       });
-      await CommentTableTestHelper.addComment({
+      await CommentsTableTestHelper.addComment({
         id: 'comment-125',
         threadId: 'thread-123',
         owner: 'user-123',
+        currentDate,
       });
 
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
@@ -115,17 +120,20 @@ describe('CommentRepositoryPostgres interface', () => {
     });
 
     it('should not throw NotFoundError when commentId found', async () => {
+      const currentDate = new Date().toISOString();
       await UsersTableTestHelper.addUser({
         id: 'user-123',
       });
       await ThreadsTableTestHelper.addThread({
         id: 'thread-123',
         owner: 'user-123',
+        currentDate,
       });
-      await CommentTableTestHelper.addComment({
+      await CommentsTableTestHelper.addComment({
         id: 'comment-125',
         threadId: 'thread-123',
         owner: 'user-123',
+        currentDate,
       });
 
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
@@ -145,6 +153,7 @@ describe('CommentRepositoryPostgres interface', () => {
         threadId: 'thread-123',
         owner: 'user-xxxx',
       };
+      const currentDate = new Date().toISOString();
 
       const deleteComment = new DeletedComment(payload);
       await UsersTableTestHelper.addUser({
@@ -153,41 +162,48 @@ describe('CommentRepositoryPostgres interface', () => {
       await ThreadsTableTestHelper.addThread({
         id: 'thread-123',
         owner: 'user-xxx',
+        currentDate,
       });
-      await CommentTableTestHelper.addComment({
+      await CommentsTableTestHelper.addComment({
         id: 'comment-125',
         threadId: 'thread-123',
         owner: 'user-xxx',
+        currentDate,
       });
 
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
       await commentRepositoryPostgres.deleteComment(deleteComment);
-      const deletedComment = await CommentTableTestHelper.getCommentById(
+      const deletedComment = await CommentsTableTestHelper.getCommentById(
         'comment-125',
       );
+
       expect(deletedComment[0]).toBeDefined();
       expect(deletedComment[0].id).toEqual('comment-125');
       expect(deletedComment[0].date).toBeDefined();
+      expect(deletedComment[0].date).toEqual(currentDate);
       expect(deletedComment[0].is_delete).toEqual(true);
     });
   });
 
   describe('getCommentWithThread function', () => {
     it('should return thread with comment correctly', async () => {
+      const currentDate = new Date().toISOString();
+
       await UsersTableTestHelper.addUser({
         id: 'user-xxx',
       });
       await ThreadsTableTestHelper.addThread({
         id: 'thread-yyyy',
         owner: 'user-xxx',
+        currentDate,
       });
-      const result = await CommentTableTestHelper.addComment({
+      await CommentsTableTestHelper.addComment({
         id: 'comment-zzz',
         threadId: 'thread-yyyy',
         owner: 'user-xxx',
         content: 'lorem ipsum',
+        currentDate,
       });
-      const commentDate = result.rows[0].date;
 
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
       const comments = await commentRepositoryPostgres.getCommentWithThread(
@@ -202,7 +218,7 @@ describe('CommentRepositoryPostgres interface', () => {
       expect(comments[0]).toHaveProperty('username');
       expect(comments[0].username).toEqual('dicoding');
       expect(comments[0].date).toBeDefined();
-      expect(comments[0].date).toEqual(commentDate);
+      expect(comments[0].date).toEqual(currentDate);
       expect(comments[0].content).toEqual('lorem ipsum');
       expect(comments[0].is_delete).toEqual(false);
     });

@@ -6,14 +6,13 @@ const addComment = async ({
   content = 'lorem ipsum',
   threadId = 'thread-123',
   owner = 'user-123',
+  currentDate,
 }) => {
-  const date = new Date().toISOString();
   const query = {
-    text: 'INSERT INTO comments VALUES ($1,$2,$3,$4,$5) returning date',
-    values: [id, content, threadId, owner, date],
+    text: 'INSERT INTO comments VALUES ($1,$2,$3,$4,$5)',
+    values: [id, content, threadId, owner, currentDate],
   };
-  const result = await pool.query(query);
-  return result;
+  await pool.query(query);
 };
 
 const getCommentById = async (id) => {

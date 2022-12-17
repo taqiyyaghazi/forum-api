@@ -6,15 +6,14 @@ const addThread = async ({
   title = 'lorem ipsum',
   body = 'description lorep',
   owner = 'user-124',
+  currentDate,
 }) => {
-  const date = new Date().toISOString();
   const query = {
-    text: 'INSERT INTO threads VALUES ($1,$2,$3,$4,$5) returning date',
-    values: [id, title, body, owner, date],
+    text: 'INSERT INTO threads VALUES ($1,$2,$3,$4,$5)',
+    values: [id, title, body, owner, currentDate],
   };
 
-  const result = await pool.query(query);
-  return result;
+  await pool.query(query);
 };
 
 const getThreadById = async (id) => {

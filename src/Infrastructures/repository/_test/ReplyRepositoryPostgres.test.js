@@ -38,6 +38,7 @@ describe('ReplyRepositoryPostgres interface', () => {
         owner: 'user-123',
       };
 
+      const currentDate = new Date().toISOString();
       const {
         content, threadId, commentId, owner,
       } = payload;
@@ -57,12 +58,14 @@ describe('ReplyRepositoryPostgres interface', () => {
         owner: 'user-123',
         title: 'Title thread',
         body: 'Content body thread',
+        currentDate,
       });
       await CommentsTableTestHelper.addComment({
         id: 'comment-123',
         content: 'lorem ipsum',
         threadId: 'thread-123',
         owner: 'user-123',
+        currentDate,
       });
 
       const addedReply = await replyRepositoryPostgres.addReply(
@@ -95,22 +98,27 @@ describe('ReplyRepositoryPostgres interface', () => {
     });
 
     it('should not throw NotFoundError when replyId found', async () => {
+      const currentDate = new Date().toISOString();
+
       await UsersTableTestHelper.addUser({
         id: 'user-123',
       });
       await ThreadsTableTestHelper.addThread({
         id: 'thread-123',
         owner: 'user-123',
+        currentDate,
       });
       await CommentsTableTestHelper.addComment({
         id: 'comment-123',
         threadId: 'thread-123',
         owner: 'user-123',
+        currentDate,
       });
       await RepliesTableTestHelper.addReply({
         id: 'reply-125',
         commentId: 'comment-123',
         owner: 'user-123',
+        currentDate,
       });
 
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
@@ -134,22 +142,27 @@ describe('ReplyRepositoryPostgres interface', () => {
     });
 
     it('should not throw NotFoundError when replyId found', async () => {
+      const currentDate = new Date().toISOString();
+
       await UsersTableTestHelper.addUser({
         id: 'user-123',
       });
       await ThreadsTableTestHelper.addThread({
         id: 'thread-123',
         owner: 'user-123',
+        currentDate,
       });
       await CommentsTableTestHelper.addComment({
         id: 'comment-123',
         threadId: 'thread-123',
         owner: 'user-123',
+        currentDate,
       });
       await RepliesTableTestHelper.addReply({
         id: 'reply-125',
         commentId: 'comment-123',
         owner: 'user-123',
+        currentDate,
       });
 
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
@@ -170,6 +183,7 @@ describe('ReplyRepositoryPostgres interface', () => {
         commentId: 'comment-123',
         owner: 'user-xxxx',
       };
+      const currentDate = new Date().toISOString();
 
       const deleteReply = new DeletedReply(payload);
       await UsersTableTestHelper.addUser({
@@ -178,17 +192,20 @@ describe('ReplyRepositoryPostgres interface', () => {
       await ThreadsTableTestHelper.addThread({
         id: 'thread-123',
         owner: 'user-xxx',
+        currentDate,
       });
       await CommentsTableTestHelper.addComment({
         id: 'comment-123',
         threadId: 'thread-123',
         owner: 'user-xxx',
+        currentDate,
       });
       await RepliesTableTestHelper.addReply({
         id: 'reply-125',
         threadId: 'thread-123',
         commentId: 'comment-123',
         owner: 'user-xxx',
+        currentDate,
       });
 
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
@@ -199,33 +216,38 @@ describe('ReplyRepositoryPostgres interface', () => {
       expect(deletedReply[0]).toBeDefined();
       expect(deletedReply[0].id).toEqual('reply-125');
       expect(deletedReply[0].date).toBeDefined();
+      expect(deletedReply[0].date).toEqual(currentDate);
       expect(deletedReply[0].is_delete).toEqual(true);
     });
   });
 
   describe('getReplyWithComment function', () => {
     it('should return comment with reply correctly', async () => {
+      const currentDate = new Date().toISOString();
+
       await UsersTableTestHelper.addUser({
         id: 'user-xxx',
       });
       await ThreadsTableTestHelper.addThread({
         id: 'thread-yyyy',
         owner: 'user-xxx',
+        currentDate,
       });
       await CommentsTableTestHelper.addComment({
         id: 'comment-zzz',
         threadId: 'thread-yyyy',
         owner: 'user-xxx',
         content: 'lorem ipsum',
+        currentDate,
       });
-      const result = await RepliesTableTestHelper.addReply({
+      await RepliesTableTestHelper.addReply({
         id: 'reply-yyy',
         threadId: 'thread-yyyy',
         commentId: 'comment-zzz',
         owner: 'user-xxx',
         content: 'lorem ipsum',
+        currentDate,
       });
-      const replyDate = result.rows[0].date;
 
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
       const replies = await replyRepositoryPostgres.getReplyWithComment(
@@ -240,7 +262,7 @@ describe('ReplyRepositoryPostgres interface', () => {
       expect(replies[0]).toHaveProperty('username');
       expect(replies[0].username).toEqual('dicoding');
       expect(replies[0].date).toBeDefined();
-      expect(replies[0].date).toEqual(replyDate);
+      expect(replies[0].date).toEqual(currentDate);
       expect(replies[0].content).toEqual('lorem ipsum');
       expect(replies[0].is_delete).toEqual(false);
     });

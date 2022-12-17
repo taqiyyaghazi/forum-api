@@ -7,14 +7,13 @@ const addReply = async ({
   threadId = 'thread-123',
   commentId = 'comment-123',
   owner = 'user-123',
+  currentDate,
 }) => {
-  const date = new Date().toISOString();
   const query = {
-    text: 'INSERT INTO replies VALUES ($1, $2, $3, $4, $5, $6) returning date',
-    values: [id, content, threadId, commentId, owner, date],
+    text: 'INSERT INTO replies VALUES ($1, $2, $3, $4, $5, $6)',
+    values: [id, content, threadId, commentId, owner, currentDate],
   };
-  const result = await pool.query(query);
-  return result;
+  await pool.query(query);
 };
 
 const getReplyById = async (id) => {

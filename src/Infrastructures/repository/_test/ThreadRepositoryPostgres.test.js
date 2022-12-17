@@ -84,12 +84,15 @@ describe('ThreadRepositoryPostgres interface', () => {
     });
 
     it('should not throw NotFoundError when thread available', async () => {
+      const currentDate = new Date().toISOString();
+
       await UsersTableTestHelper.addUser({ id: 'user-123' });
       await ThreadsTableTestHelper.addThread({
         id: 'thread-123',
         title: 'Title thread',
         body: 'description thread',
         owner: 'user-123',
+        currentDate,
       });
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
       await expect(
@@ -100,18 +103,20 @@ describe('ThreadRepositoryPostgres interface', () => {
 
   describe('getThreadById function', () => {
     it('should correctly get thread by id', async () => {
+      const currentDate = new Date().toISOString();
+
       await UsersTableTestHelper.addUser({
         id: 'user-123',
         username: 'ghazi',
       });
 
-      const result = await ThreadsTableTestHelper.addThread({
+      await ThreadsTableTestHelper.addThread({
         id: 'thread-123',
         title: 'Title 123',
         body: 'Body thread',
         owner: 'user-123',
+        currentDate,
       });
-      const threadDate = result.rows[0].date;
 
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
       const threads = await threadRepositoryPostgres.getThreadById(
@@ -122,7 +127,7 @@ describe('ThreadRepositoryPostgres interface', () => {
       expect(threads.title).toEqual('Title 123');
       expect(threads.body).toEqual('Body thread');
       expect(threads.date).toBeDefined();
-      expect(threads.date).toEqual(threadDate);
+      expect(threads.date).toEqual(currentDate);
     });
   });
 });
