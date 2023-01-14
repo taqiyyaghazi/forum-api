@@ -113,7 +113,7 @@ describe('CommentLikeUseCase', () => {
 
     mockCommentLikeRepository.putIsLikeComment = jest
       .fn()
-      .mockImplementation(() => Promise.resolve(false));
+      .mockImplementation(() => Promise.resolve(!isLike));
 
     /** creating use case instance */
 
@@ -139,7 +139,7 @@ describe('CommentLikeUseCase', () => {
       commentId,
       threadId,
       owner,
-      isLike,
+      isLike: !isLike,
     });
   });
 });

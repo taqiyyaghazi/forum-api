@@ -25,7 +25,7 @@ class CommentLikeUseCase {
       return this._commentLikeRepository.putIsLikeComment({
         commentId,
         threadId,
-        isLike,
+        isLike: !isLike,
         owner: userId,
       });
     }
