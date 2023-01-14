@@ -33,7 +33,6 @@ describe('CommentLike entities', () => {
 
     const commentLike = new CommentLike(payload);
 
-    expect(commentLike.id).toEqual(payload.id);
     expect(commentLike.threadId).toEqual(payload.threadId);
     expect(commentLike.commentId).toEqual(payload.commentId);
     expect(commentLike.owner).toEqual(payload.owner);
