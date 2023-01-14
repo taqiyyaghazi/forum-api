@@ -110,7 +110,7 @@ describe('/comments endpoint', () => {
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual('fail');
       expect(responseJson.message).toEqual(
-        'tidak dapat membuat comment baru karena karena properti yang dibutuhkan tidak ada',
+        'tidak dapat membuat comment baru karena properti yang dibutuhkan tidak ada',
       );
     });
     it('should throw error 400 when request payload not meet data type specification', async () => {
@@ -132,7 +132,7 @@ describe('/comments endpoint', () => {
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual('fail');
       expect(responseJson.message).toEqual(
-        'tidak dapat membuat comment baru karena karena tipe data tidak sesuai',
+        'tidak dapat membuat comment baru karena tipe data tidak sesuai',
       );
     });
   });
