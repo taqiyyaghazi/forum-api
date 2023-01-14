@@ -20,10 +20,11 @@ class CommentLikeUseCase {
       commentLike,
     );
 
-    if (!commentLikeIsAvailable) {
-      return this._commentLikeRepository.addCommentLike(commentLike);
+    if (commentLikeIsAvailable) {
+      const isLikeCommentValue = await this._commentLikeRepository.getIsLikeComment(commentLike);
+      return this._commentLikeRepository.putIsLikeComment({ commentId, isLikeCommentValue });
     }
-    return this._commentLikeRepository.putIsLikeComment(commentLike);
+    return this._commentLikeRepository.addCommentLike(commentLike);
   }
 }
 

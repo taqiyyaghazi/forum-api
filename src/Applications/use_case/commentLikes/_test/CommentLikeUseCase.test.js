@@ -84,12 +84,8 @@ describe('CommentLikeUseCase', () => {
       threadId: 'thread-123',
       userId: credential.id,
     };
-
-    const expectedCommentLike = new CommentLike({
-      commentId: useCasePayload.commentId,
-      threadId: useCasePayload.threadId,
-      owner: credential.id,
-    });
+    const isLikeCommentValue = true;
+    const expectedIsLikeComment = false;
 
     const { commentId, threadId, userId: owner } = useCasePayload;
 
@@ -111,15 +107,13 @@ describe('CommentLikeUseCase', () => {
       .fn()
       .mockImplementation(() => Promise.resolve(true));
 
+    mockCommentLikeRepository.getIsLikeComment = jest
+      .fn()
+      .mockImplementation(() => Promise.resolve(isLikeCommentValue));
+
     mockCommentLikeRepository.putIsLikeComment = jest
       .fn()
-      .mockImplementation(() => Promise.resolve(
-        new CommentLike({
-          commentId: 'comment-123',
-          threadId: 'thread-123',
-          owner: 'user-123',
-        }),
-      ));
+      .mockImplementation(() => Promise.resolve(false));
 
     /** creating use case instance */
 
@@ -133,7 +127,7 @@ describe('CommentLikeUseCase', () => {
     const commentLikeRepository = await getCommentLikeUseCase.execute(
       useCasePayload,
     );
-    expect(commentLikeRepository).toStrictEqual(expectedCommentLike);
+    expect(commentLikeRepository).toStrictEqual(expectedIsLikeComment);
     expect(mockThreadRepository.verifyAvailableThread).toBeCalledWith(threadId);
     expect(mockCommentRepository.verifyAvailableComment).toBeCalledWith(
       commentId,
@@ -141,8 +135,9 @@ describe('CommentLikeUseCase', () => {
     expect(mockCommentLikeRepository.verifyAvailableCommentLike).toBeCalledWith(
       new CommentLike({ commentId, threadId, owner }),
     );
-    expect(mockCommentLikeRepository.putIsLikeComment).toBeCalledWith(
-      new CommentLike({ commentId, threadId, owner }),
-    );
+    expect(mockCommentLikeRepository.putIsLikeComment).toBeCalledWith({
+      commentId,
+      isLikeCommentValue,
+    });
   });
 });
