@@ -2,24 +2,22 @@ class CommentLike {
   constructor(payload) {
     this._verifyPayload(payload);
     const {
-      threadId, commentId, id, owner,
+      threadId, commentId, owner,
     } = payload;
-    this.id = id;
     this.threadId = threadId;
     this.commentId = commentId;
     this.owner = owner;
   }
 
   _verifyPayload({
-    threadId, commentId, id, owner,
+    threadId, commentId, owner,
   }) {
-    if (!threadId || !commentId || !id || !owner) {
+    if (!threadId || !commentId || !owner) {
       throw new Error('COMMENT_LIKE.NOT_CONTAIN_NEEDED');
     }
     if (
       typeof threadId !== 'string'
       || typeof commentId !== 'string'
-      || typeof id !== 'string'
       || typeof owner !== 'string'
     ) {
       throw new Error('COMMENT_LIKE.NOT_MEET_DATA_TYPE_SPECIFICATION');

@@ -14,7 +14,6 @@ describe('CommentLike entities', () => {
 
   it('should throw error when paylod not meet data specification', () => {
     const payload = {
-      id: true,
       threadId: 123,
       commentId: true,
       owner: 123,
@@ -27,7 +26,6 @@ describe('CommentLike entities', () => {
 
   it('should correctly', () => {
     const payload = {
-      id: 'comment-like-123',
       threadId: 'thread-123',
       commentId: 'comment-123',
       owner: 'user-123',
