@@ -51,6 +51,12 @@ DomainErrorTranslator._directories = {
   'REPLY.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError(
     'tidak dapat membuat reply baru karena karena tipe data tidak sesuai',
   ),
+  'COMMENT_LIKE.NOT_CONTAIN_NEEDED': new InvariantError(
+    'tidak dapat membuat comment like baru karena karena properti yang dibutuhkan tidak ada',
+  ),
+  'COMMENT_LIKE.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError(
+    'tidak dapat membuat comment like baru karena karena tipe data tidak sesuai',
+  ),
 };
 
 module.exports = DomainErrorTranslator;
