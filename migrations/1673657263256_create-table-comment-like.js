@@ -22,7 +22,7 @@ exports.up = (pgm) => {
     },
     is_like: {
       type: 'BOOLEAN',
-      default: false,
+      default: true,
     },
   });
 
