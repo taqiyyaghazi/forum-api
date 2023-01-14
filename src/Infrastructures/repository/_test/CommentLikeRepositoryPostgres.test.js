@@ -5,18 +5,12 @@ const CommentLikeRepositoryPostgres = require('../CommentLikeRepositoryPostgres'
 const pool = require('../../database/postgres/pool');
 // Layer Domains
 const AddedCommentLike = require('../../../Domains/commentLikes/entities/AddedCommentLike');
-const NewComment = require('../../../Domains/comments/entities/NewComment');
 const CommentLike = require('../../../Domains/commentLikes/entities/CommentLike');
-const DeletedComment = require('../../../Domains/comments/entities/DeletedComment');
-// Layer Commons / Handle error
-const NotFoundError = require('../../../Commons/exceptions/NotFoundError');
-const AuthorizationError = require('../../../Commons/exceptions/AuthorizationError');
 // test
 const ThreadsTableTestHelper = require('../../../../tests/ThreadsTableTestHelper');
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
 const CommentsTableTestHelper = require('../../../../tests/CommentsTableTestHelper');
 const CommentLikesTableTestHelper = require('../../../../tests/CommentLikesTableTestHelper');
-const CommentTableTestHelper = require('../../../../tests/CommentLikesTableTestHelper');
 
 describe('CommentLikeRepositoryPostgres interface', () => {
   afterEach(async () => {
