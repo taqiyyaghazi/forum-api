@@ -1,0 +1,30 @@
+const CommentLike = require('../../../Domains/commentLikes/entities/CommentLike');
+
+class CommentLikeUseCase {
+  constructor({ commentRepository, threadRepository, commentLikeRepository }) {
+    this._commentLikeRepository = commentLikeRepository;
+    this._commentRepository = commentRepository;
+    this._threadRepository = threadRepository;
+  }
+
+  async execute(useCasePayload) {
+    const {
+      commentId, threadId, userId,
+    } = useCasePayload;
+    await this._threadRepository.verifyAvailableThread(threadId);
+    await this._commentRepository.verifyAvailableComment(commentId);
+    const commentLike = new CommentLike({
+      commentId, threadId, owner: userId,
+    });
+    const commentLikeIsAvailable = await this._commentLikeRepository.verifyAvailableCommentLike(
+      commentLike,
+    );
+
+    if (!commentLikeIsAvailable) {
+      return this._commentLikeRepository.addCommentLike(commentLike);
+    }
+    return this._commentLikeRepository.putIsLikeComment(commentLike);
+  }
+}
+
+module.exports = CommentLikeUseCase;
