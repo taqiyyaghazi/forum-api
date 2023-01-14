@@ -21,8 +21,13 @@ class CommentLikeUseCase {
     );
 
     if (commentLikeIsAvailable) {
-      const isLikeCommentValue = await this._commentLikeRepository.getIsLikeComment(commentLike);
-      return this._commentLikeRepository.putIsLikeComment({ commentId, isLikeCommentValue });
+      const isLike = await this._commentLikeRepository.getIsLikeComment(commentLike);
+      return this._commentLikeRepository.putIsLikeComment({
+        commentId,
+        threadId,
+        isLike,
+        owner: userId,
+      });
     }
     return this._commentLikeRepository.addCommentLike(commentLike);
   }

@@ -84,7 +84,7 @@ describe('CommentLikeUseCase', () => {
       threadId: 'thread-123',
       userId: credential.id,
     };
-    const isLikeCommentValue = true;
+    const isLike = true;
     const expectedIsLikeComment = false;
 
     const { commentId, threadId, userId: owner } = useCasePayload;
@@ -109,7 +109,7 @@ describe('CommentLikeUseCase', () => {
 
     mockCommentLikeRepository.getIsLikeComment = jest
       .fn()
-      .mockImplementation(() => Promise.resolve(isLikeCommentValue));
+      .mockImplementation(() => Promise.resolve(isLike));
 
     mockCommentLikeRepository.putIsLikeComment = jest
       .fn()
@@ -137,7 +137,9 @@ describe('CommentLikeUseCase', () => {
     );
     expect(mockCommentLikeRepository.putIsLikeComment).toBeCalledWith({
       commentId,
-      isLikeCommentValue,
+      threadId,
+      owner,
+      isLike,
     });
   });
 });
