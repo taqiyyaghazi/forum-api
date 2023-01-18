@@ -88,9 +88,9 @@ describe('/likes endpoint', () => {
       reqBodyComment.id = responseCommentJson.data.addedComment.id;
     });
 
-    it('should response 201 and like comment', async () => {
+    it('should response 201 and comment is liked', async () => {
       const server = await createServer(container);
-      const response = await server.inject({
+      const responseLike = await server.inject({
         method: 'PUT',
         url: `/threads/${reqBodyThread.id}/comments/${reqBodyComment.id}/likes`,
         headers: {
@@ -98,9 +98,16 @@ describe('/likes endpoint', () => {
         },
       });
 
-      const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(200);
-      expect(responseJson.status).toEqual('success');
+      const responseThread = await server.inject({
+        method: 'GET',
+        url: `/threads/${reqBodyThread.id}`,
+      });
+
+      const responseThreadJson = JSON.parse(responseThread.payload);
+      const responseLikeJson = JSON.parse(responseLike.payload);
+      expect(responseLike.statusCode).toEqual(200);
+      expect(responseLikeJson.status).toEqual('success');
+      expect(responseThreadJson.data.thread.comments[0].likeCount).toEqual(1);
     });
   });
 });
