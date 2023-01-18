@@ -43,11 +43,11 @@ const cleanTableCommentLikes = async () => {
   await pool.query('DELETE FROM comments WHERE 1=1');
 };
 
-const CommentTableTestHelper = {
+const CommentLikesTableTestHelper = {
   addCommentLike,
   getCommentLikeById,
   putCommentLikeById,
   cleanTableCommentLikes,
 };
 
-module.exports = CommentTableTestHelper;
+module.exports = CommentLikesTableTestHelper;
