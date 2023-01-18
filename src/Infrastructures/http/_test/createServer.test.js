@@ -27,7 +27,7 @@ describe('HTTP server', () => {
       });
       // Assert
       expect(response.statusCode).toEqual(200);
-      expect(response.result).toEqual('Forum API v.1.0');
+      expect(response.result).toEqual('Forum API v.1.2');
     });
   });
 
