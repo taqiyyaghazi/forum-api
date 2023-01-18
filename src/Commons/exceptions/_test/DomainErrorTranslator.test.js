@@ -76,7 +76,7 @@ describe('DomainErrorTranslator', () => {
       DomainErrorTranslator.translate(new Error('REPLY.NOT_CONTAIN_NEEDED')),
     ).toStrictEqual(
       new InvariantError(
-        'tidak dapat membuat reply baru karena properti yang dibutuhkan tidak ada failed test case',
+        'tidak dapat membuat reply baru karena properti yang dibutuhkan tidak ada',
       ),
     );
     expect(
